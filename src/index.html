@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Кинотека</title>
+  <!-- Подключение локального CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Подключение иконок Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Подключение библиотеки jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <div class="app">
+    <!-- Шапка приложения -->
+    <header class="header">
+      <div class="logo">
+        <!-- Иконка фильма и заголовок -->
+        <i class="fas fa-film"></i>
+        <h1>Кинотека</h1>
+      </div>
+      <div class="user-a">
+        <!-- Кнопка для открытия модального окна добавления фильма -->
+        <label for="modal-t" class="btn btn-p">
+          <i class="fas fa-plus"></i> Добавить фильм
+        </label>
+      </div>
+    </header>
+
+    <main class="main-con">
+      <!-- Боковая панель с фильтрами -->
+      <aside class="sid">
+        <div class="fil">
+          <h3>Фильтры</h3>
+          <!-- Поисковое поле -->
+          <div class="fil-g">
+            <input type="text" placeholder="Поиск..." class="sea-it" />
+          </div>
+          <!-- Фильтр по жанру -->
+          <div class="fil-g">
+            <label>Жанр</label>
+            <select class="fil-s" data-filter="genre">
+              <option>Все жанры</option>
+              <option>Драма</option>
+              <option>Комедия</option>
+              <option>Фантастика</option>
+              <option>Художественный фильм </option>
+              <option>Биографический</option>
+              <option>Боевик</option>
+              <option>Детектив</option>
+              <option>Исторический</option>
+              <option>Мелодрама</option>
+              <option>Приключения</option>
+              <option>Фэнтези</option>
+              <option>Триллер</option>
+              <option>Ужасы</option>
+              <option>Мюзикл</option>
+              <option>Нуар</option>
+              <option>Документальный</option>
+            </select>
+          </div>
+          <!-- Фильтр по году выпуска -->
+          <div class="fil-g">
+            <label>Год</label>
+            <select class="fil-s" data-filter="year">
+              <option>Все годы</option>
+              <option>2020-2023</option>
+              <option>2010-2019</option>
+              <option>2000-2009</option>
+              <option>1990-2000</option>
+            </select>
+          </div>
+          <!-- Фильтр по рейтингу -->
+          <div class="fil-g">
+            <label>Рейтинг</label>
+            <select class="fil-s" data-filter="rating">
+              <option>Любой</option>
+              <option>8+</option>
+              <option>5-8</option>
+              <option>0-5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fav">
+          <h2>Избранное <span class="badge"></span></h2>
+          <ul class="fav-list">
+            <!-- Сюда будут добавляться избранные фильмы -->
+          </ul>
+        </div>
+
+      </aside>
+      <!-- Основной раздел для отображения списка фильмов -->
+      <section class="movie-g"></section>
+    </main>
+  </div>
+
+  <!-- Скрытый чекбокс для управления видимостью модального окна -->
+  <input type="checkbox" id="modal-t" style="display: none;">
+
+  <!-- Модальное окно добавления фильма -->
+  <div class="modal-o">
+    <div class="modal">
+      <h2>Добавить фильм</h2>
+      <form id="addM">
+        <!-- Поле ввода названия фильма -->
+        <input type="text" name="title" placeholder="Название" required />
+        <!-- Поле ввода года выпуска -->
+        <input type="number" name="year" placeholder="Год" required />
+        <!-- Поле ввода жанра -->
+        <input type="text" name="genre" placeholder="Жанр" required />
+        <!-- Текстовое поле для описания фильма -->
+        <textarea name="desc" placeholder="Описание" required maxlength="200" rows="4"></textarea>
+        <!-- Поле загрузки постера фильма -->
+        <input type="file" name="poster" accept="image/*" id="posterU" />
+        <small>Рекомендуемый размер: 300x450px</small>
+        <div class="modal-a">
+          <!-- Кнопка отправки формы (добавления фильма) -->
+          <button type="submit" class="btn btn-p">Добавить</button>
+          <!-- Кнопка закрытия модального окна (отмена) -->
+          <label for="modal-t" class="">Отмена</label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Подключение основного скрипта с отложенным запуском -->
+  <script src="1.js" defer></script>
+
+</body>
+</html>
