@@ -398,15 +398,15 @@ body {
 /* Адаптивные стили для карточек фильмов */
 @media (max-width: 768px) {
   .movie-g {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
   }
-  
+
   .movie-c {
-      height: auto;
+    height: auto;
   }
-  
+
   .movie-p {
-      height: 200px;
+    height: 200px;
   }
 }

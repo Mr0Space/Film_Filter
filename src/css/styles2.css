@@ -229,6 +229,26 @@ body {
   font-weight: bold;
 }
 
+/* Добавляем в раздел стилей для страницы фильма */
+#add-to-favorites-btn {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#add-to-favorites-btn .fas {
+  color: white;
+}
+
+#add-to-favorites-btn.active {
+  background-color: #d43a55;
+}
+
+#add-to-favorites-btn.active i {
+  color: white;
+}
+
 /* Адаптивные стили для карточек фильмов */
 @media (max-width: 768px) {
   .movie-g {
