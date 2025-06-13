@@ -26,7 +26,7 @@
       <div class="user-a">
         <!-- Кнопка для открытия модального окна добавления фильма -->
         <label for="modal-t" class="btn btn-p">
-          <i class="fas fa-plus"></i> Добавить фильм
+          <i class="fas fa-plus"></i> Избранное
         </label>
       </div>
     </header>
@@ -85,14 +85,6 @@
             </select>
           </div>
         </div>
-
-        <div class="fav">
-          <h2>Избранное <span class="badge"></span></h2>
-          <ul class="fav-list">
-            <!-- Сюда будут добавляться избранные фильмы -->
-          </ul>
-        </div>
-
       </aside>
       <!-- Основной раздел для отображения списка фильмов -->
       <section class="movie-g"></section>
@@ -105,31 +97,20 @@
   <!-- Модальное окно добавления фильма -->
   <div class="modal-o">
     <div class="modal">
-      <h2>Добавить фильм</h2>
-      <form id="addM">
-        <!-- Поле ввода названия фильма -->
-        <input type="text" name="title" placeholder="Название" required />
-        <!-- Поле ввода года выпуска -->
-        <input type="number" name="year" placeholder="Год" required />
-        <!-- Поле ввода жанра -->
-        <input type="text" name="genre" placeholder="Жанр" required />
-        <!-- Текстовое поле для описания фильма -->
-        <textarea name="desc" placeholder="Описание" required maxlength="200" rows="4"></textarea>
-        <!-- Поле загрузки постера фильма -->
-        <input type="file" name="poster" accept="image/*" id="posterU" />
-        <small>Рекомендуемый размер: 300x450px</small>
-        <div class="modal-a">
-          <!-- Кнопка отправки формы (добавления фильма) -->
-          <button type="submit" class="btn btn-p">Добавить</button>
-          <!-- Кнопка закрытия модального окна (отмена) -->
-          <label for="modal-t" class="">Отмена</label>
-        </div>
-      </form>
+      <h2>Избранное</h2>
+      <div class="fav">
+        <h2>Мои фильмы <span class="badge">0</span></h2>
+        <ul class="fav-list">
+        </ul>
+      </div>
+      <div class="modal-a">
+        <label for="modal-t" class="btn btn-p">Закрыть</label>
+      </div>
     </div>
   </div>
 
   <!-- Подключение основного скрипта с отложенным запуском -->
-  <script src="1.js" defer></script>
+  <script src="" defer></script>
 
 </body>
 </html>

@@ -11,7 +11,7 @@ body {
   background-color: #f5f5f5;
 }
 
-/* Основной контейнер приложения, вертикальный флекс-контейнер */
+/* Основной контейнер */
 .app {
   display: flex;
   flex-direction: column;
@@ -132,7 +132,7 @@ body {
 }
 
 /* Показываем модальное окно, когда чекбокс #modal-t отмечен */
-#modal-t:checked + .modal-o {
+#modal-t:checked+.modal-o {
   display: flex;
 }
 
@@ -185,7 +185,7 @@ body {
 .modal-a label {
   padding: 0.5rem 1rem;
   cursor: pointer;
-  color: #666;
+  color: #ffffff;
   user-select: none;
 }
 
@@ -263,7 +263,6 @@ body {
   max-height: 300px;
   border: 1px solid #ddd;
   cursor: ns-resize;
-  
 }
 
 /* Стили для поля загрузки файла в модальном окне */
@@ -317,7 +316,62 @@ body {
 .movie-p {
   position: relative;
 }
+
 /* Размер иконки внутри кнопки */
 .fav-btn i {
-  font-size: 2rem;      
+  font-size: 2rem;
+}
+
+/* Стили для списка избранного */
+.fav-list {
+  list-style: none;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Элементы списка избранного */
+.fav-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  border-bottom: 1px solid #eee;
+  gap: 1rem;
+}
+
+/* Текст внутри элементов списка */
+.fav-list li span {
+  flex-grow: 1;
+}
+
+/* Контейнер для рейтинга фильма */
+.movie-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* Иконки рейтинга */
+.movie-rating i {
+  color: #e94560;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+/* Значение рейтинга */
+.rating-value {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  min-width: 30px;
+}
+
+/* Кнопка удаления из списка */
+.remove-btn {
+  background: none;
+  border: none;
+  color: #e94560;
+  cursor: pointer;
+  padding: 0.3rem;
+  margin-left: 0.5rem;
 }
