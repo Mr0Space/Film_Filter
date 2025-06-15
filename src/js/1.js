@@ -23,6 +23,19 @@ document.addEventListener('DOMContentLoaded', function() {
             renderFavorites();
         });
 
+    // Функция для сохранения в localStorage
+    function saveToLocalStorage() {
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    // Функция для удаления из избранного
+    function removeFromFavorites(movieId) {
+        favorites = favorites.filter(movie => movie.id !== movieId);
+        saveToLocalStorage();
+        renderFavorites();
+        renderMovies();
+    }
+
     // Функция для отображения фильмов
     function renderMovies(moviesToRender = movies) {
         const movieGrid = document.querySelector('.movie-g');
@@ -68,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
             movieGrid.appendChild(movieCard);
         });
 
+        // Обновляем обработчики для кнопок избранного
+        updateFavButtons();
     }
 
     // Функция для создания звезд рейтинга
@@ -90,7 +105,160 @@ document.addEventListener('DOMContentLoaded', function() {
         const favoritesList = document.querySelector('.fav-list');
         favoritesList.innerHTML = '';
 
+        if (favorites.length === 0) {
+            favoritesList.innerHTML = '<li>Пока нет избранных фильмов</li>';
+        } else {
+            favorites.forEach(movie => {
+                const li = document.createElement('li');
+                li.dataset.id = movie.id;
+
+                li.innerHTML = `
+                    <span>${movie.title} (${movie.year})</span>
+                    <div class="movie-rating" data-movie-id="${movie.id}">
+                        ${createStars(movie.userRating || 0)}
+                        <span class="rating-value">${movie.userRating?.toFixed(1) || 0}/5</span>
+                    </div>
+                    <button class="remove-btn"><i class="fas fa-times"></i></button>
+                `;
+
+                // Обработка клика по звездам
+                const ratingContainer = li.querySelector('.movie-rating');
+                ratingContainer.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('fa-star') || 
+                        e.target.classList.contains('fa-star-half-alt')) {
+                        const star = e.target;
+                        const rating = parseFloat(star.dataset.rating);
+                        
+                        // Обновляем рейтинг
+                        const movieId = parseInt(this.dataset.movieId);
+                        const favMovie = favorites.find(m => m.id === movieId);
+                        if (favMovie) {
+                            favMovie.userRating = rating;
+                            saveToLocalStorage();
+                            
+                            // Обновляем отображение
+                            this.innerHTML = createStars(rating) + 
+                                `<span class="rating-value">${rating.toFixed(1)}/5</span>`;
+                            
+                            // Обновляем рейтинг в основной сетке
+                            updateMovieRating(movieId, rating);
+                        }
+                    }
+                });
+
+                // Кнопка удаления
+                li.querySelector('.remove-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeFromFavorites(movie.id);
+                });
+
+                favoritesList.appendChild(li);
+            });
+        }
+
         // Обновляем счетчик избранного
         document.querySelector('.badge').textContent = favorites.length;
     }
+
+    // Обновляет рейтинг в основной сетке фильмов
+    function updateMovieRating(movieId, rating) {
+        document.querySelectorAll('.movie-c').forEach(card => {
+            if (parseInt(card.dataset.id) === movieId) {
+                const ratingElement = card.querySelector('.user-rating-value');
+                if (ratingElement) {
+                    ratingElement.textContent = rating.toFixed(1);
+                }
+            }
+        });
+    }
+
+    // Обновляет обработчики для кнопок избранного
+    function updateFavButtons() {
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const card = this.closest('.movie-c');
+                const movieId = parseInt(card.dataset.id);
+                const movie = movies.find(m => m.id === movieId);
+                
+                if (movie) {
+                    const index = favorites.findIndex(m => m.id === movie.id);
+                    
+                    if (index === -1) {
+                        // Добавляем в избранное
+                        favorites.push({ ...movie, userRating: 0 });
+                    } else {
+                        // Удаляем из избранного
+                        favorites.splice(index, 1);
+                    }
+                    
+                    saveToLocalStorage();
+                    renderMovies();
+                    renderFavorites();
+                }
+            });
+        });
+    }
+
+    // Обработчики для фильтров
+    function setupFilters() {
+        const searchInput = document.querySelector('.sea-it');
+        const genreFilter = document.querySelector('[data-filter="genre"]');
+        const yearFilter = document.querySelector('[data-filter="year"]');
+        const ratingFilter = document.querySelector('[data-filter="rating"]');
+        
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const genreValue = genreFilter.value;
+            const yearValue = yearFilter.value;
+            const ratingValue = ratingFilter.value;
+            
+            let filteredMovies = movies;
+            
+            // Применяем поиск
+            if (searchTerm) {
+                filteredMovies = filteredMovies.filter(movie => 
+                    movie.title.toLowerCase().includes(searchTerm) ||
+                    movie.genre.toLowerCase().includes(searchTerm) ||
+                    (movie.director && movie.director.toLowerCase().includes(searchTerm)));
+            }
+            
+            // Применяем фильтр по жанру
+            if (genreValue !== 'Все жанры') {
+                filteredMovies = filteredMovies.filter(movie => 
+                    movie.genre.includes(genreValue));
+            }
+            
+            // Применяем фильтр по году
+            if (yearValue !== 'Все годы') {
+                const years = yearValue.split('-').map(Number);
+                if (years.length === 2) {
+                    filteredMovies = filteredMovies.filter(movie => 
+                        movie.year >= years[0] && movie.year <= years[1]);
+                }
+            }
+            
+            // Применяем фильтр по рейтингу
+            if (ratingValue !== 'Любой') {
+                if (ratingValue === '8+') {
+                    filteredMovies = filteredMovies.filter(movie => movie.rating >= 8);
+                } else if (ratingValue === '5-8') {
+                    filteredMovies = filteredMovies.filter(movie => movie.rating >= 5 && movie.rating < 8);
+                } else if (ratingValue === '0-5') {
+                    filteredMovies = filteredMovies.filter(movie => movie.rating < 5);
+                }
+            }
+            
+            renderMovies(filteredMovies);
+        }
+        
+        // Назначаем обработчики событий
+        searchInput.addEventListener('input', applyFilters);
+        genreFilter.addEventListener('change', applyFilters);
+        yearFilter.addEventListener('change', applyFilters);
+        ratingFilter.addEventListener('change', applyFilters);
+    }
+
+    // Инициализация фильтров
+    setupFilters();
 });
